@@ -1,22 +1,28 @@
-import { NextApiRequest } from 'next';
+import { NextRequest, NextResponse } from 'next/server'; 
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-export async function GET(req: NextApiRequest, { params }: { params: { id: string } }) {
-    const { id } = params; // URL から id を取得
-  
-    try {
-      const product = await prisma.product.findUnique({
-        where: { id: Number(id) }, // id を数値に変換して検索
-      });
-  
-      if (!product) {
-        return new Response(JSON.stringify({ error: 'Product not found' }), { status: 404 });
-      }
-  
-      return new Response(JSON.stringify(product), { status: 200 });
-    } catch (error) {
-      console.error(error);
-      return new Response(JSON.stringify({ error: 'Failed to fetch product' }), { status: 500 });
-    }
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get('id');
+
+  if (!id) {
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 });
   }
+
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: Number(id) },
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: 'Product not found' }, { status: 404 });
+    }
+
+    return NextResponse.json(product);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 });
+  }
+}

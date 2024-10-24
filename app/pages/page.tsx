@@ -2,6 +2,7 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 type Product = {
   id: number;
@@ -35,7 +36,7 @@ const Home = () => {
               <h2>{product.name}</h2>
               <p>{product.description}</p>
               <p>Price: ${product.price}</p>
-              <img src={product.imageUrl} alt={product.name} />
+              <Image src={product.imageUrl} alt={product.name} />
             </Link>
           </li>
         ))}
