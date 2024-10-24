@@ -1,0 +1,17 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // 環境変数にデータベースのURLを設定
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// モデルを定義
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  imageUrl    String?
+}
