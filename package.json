@@ -5,13 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && prisma generate",
     "start": "next start",
     "lint": "next lint",
     "seed": "node --loader ts-node/esm prisma/seed.ts" 
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
+    ,"scripts": {
+  "build": "prisma generate && next build"
+}
   },
   "dependencies": {
     "@prisma/client": "^5.21.1",
